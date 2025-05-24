@@ -1,19 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // تكوين Next.js للتصدير الثابت
-  output: process.env.NEXT_PUBLIC_EXPORT === "true" ? "export" : undefined,
-
-  // تعطيل تحسين الصور عند التصدير الثابت
+  // Configure images
   images: {
     unoptimized: true,
   },
 
-  // إضافة متغيرات البيئة الإضافية
+  // Add environment variables
   env: {
     APP_VERSION: "1.0.0",
   },
 
-  // تكوين إعادة الكتابة
+  // Configure rewrites
   async rewrites() {
     return [
       {
@@ -23,7 +20,7 @@ const nextConfig = {
     ]
   },
 
-  // تكوين الوسائط
+  // Configure webpack for media files
   webpack(config) {
     config.module.rules.push({
       test: /\.(mp3|wav|ogg)$/i,
@@ -42,7 +39,7 @@ const nextConfig = {
     return config
   },
 
-  // إضافة تكوين ESLint و TypeScript
+  // Configure ESLint and TypeScript
   eslint: {
     ignoreDuringBuilds: true,
   },
