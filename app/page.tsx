@@ -34,7 +34,7 @@ export default function Home() {
                 <div className="flex items-center">
                   <FontAwesomeIcon icon={faBars} className="ml-3" />
                   <span className="font-bold">لوحة التحكم</span>
-                </div>
+          </div>
                 <div className="flex items-center">
                   <span className="ml-3">09:45 صباحاً</span>
                   <FontAwesomeIcon icon={faBell} className="ml-3" />
@@ -161,7 +161,7 @@ export default function Home() {
                   <li className="flex items-start"><FontAwesomeIcon icon={faUsers} className="text-green-500 mt-1 ml-2" /><span>بوابة للموظفين لمتابعة سجلاتهم</span></li>
                   <li className="flex items-start"><FontAwesomeIcon icon={faCog} className="text-green-500 mt-1 ml-2" /><span>صلاحيات مختلفة لكل مستوى</span></li>
                 </ul>
-              </div>
+                  </div>
               <div className="feature-card p-6 rounded-xl bg-white shadow-md">
                 <div className="feature-icon h-15 w-15 flex items-center justify-center rounded-full mb-4 bg-gradient-to-br from-[#1d78b5] to-[#34b5a6] text-white text-2xl">
                   <FontAwesomeIcon icon={faMobileAlt} />

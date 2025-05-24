@@ -27,7 +27,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "نظام الحضور والانصراف",
   description: "نظام متكامل لإدارة الحضور والانصراف والإجازات للموظفين",
-  generator: 'v0.dev'
+    generator: 'v0.dev'
 }
 
 export default function RootLayout({
