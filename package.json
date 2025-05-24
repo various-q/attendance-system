@@ -91,5 +91,10 @@
     "*.{json,md}": [
       "prettier --write"
     ]
+  },
+  "mise": {
+    "settings": {
+      "idiomatic_version_file_enable_tools": ["node"]
+    }
   }
 }

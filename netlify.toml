@@ -7,6 +7,7 @@
   NEXT_TELEMETRY_DISABLED = "1"
   NPM_FLAGS = "--legacy-peer-deps"
   NODE_OPTIONS = "--max_old_space_size=4096"
+  MISE_SETTINGS = "idiomatic_version_file_enable_tools=node"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
