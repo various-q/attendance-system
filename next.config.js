@@ -3,6 +3,7 @@ const nextConfig = {
   // Configure images
   images: {
     unoptimized: true,
+    domains: ['localhost'],
   },
 
   // Add environment variables
@@ -46,6 +47,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+
+  // Configure output
+  output: 'standalone',
 }
 
 module.exports = nextConfig
