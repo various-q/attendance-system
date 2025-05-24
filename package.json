@@ -2,6 +2,9 @@
   "name": "attendance-system",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,6 +15,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.9.1",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
@@ -28,27 +32,31 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@supabase/supabase-js": "^2.0.0",
     "@tanstack/react-table": "^8.13.2",
+    "bcrypt": "^6.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^3.3.1",
     "drizzle-orm": "^0.29.3",
+    "i18next": "^21.0.0",
     "lucide-react": "^0.344.0",
     "next": "14.1.0",
+    "next-auth": "^4.24.11",
     "next-themes": "^0.2.1",
     "postgres": "^3.4.3",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.0",
+    "react-i18next": "^11.0.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.22.4",
-    "@supabase/supabase-js": "^2.0.0",
-    "i18next": "^21.0.0",
-    "react-i18next": "^11.0.0"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.11.2",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
