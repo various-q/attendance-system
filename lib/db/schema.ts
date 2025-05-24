@@ -8,6 +8,7 @@ import {
   boolean,
   json,
   uuid,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 // Employees Table
@@ -60,14 +61,17 @@ export const shiftAssignments = pgTable("shift_assignments", {
 // Leave Requests Table
 export const leaveRequests = pgTable("leave_requests", {
   id: uuid("id").primaryKey().defaultRandom(),
-  employeeId: uuid("employee_id").references(() => employees.id),
+  employeeId: uuid("employee_id").references(() => employees.id).notNull(),
+  type: varchar("type", { length: 50 }).notNull(),
   dateStart: timestamp("date_start").notNull(),
   dateEnd: timestamp("date_end").notNull(),
-  type: text("type").notNull(), // "ANNUAL", "SICK", "EMERGENCY", etc.
-  status: text("status").default("PENDING"), // "PENDING", "APPROVED", "REJECTED"
+  reason: text("reason").notNull(),
+  status: varchar("status", { length: 20 }).notNull().default("pending"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
   approvedBy: uuid("approved_by").references(() => employees.id),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  approvedAt: timestamp("approved_at"),
+  rejectionReason: text("rejection_reason"),
 });
 
 // Device Management Table
@@ -82,6 +86,16 @@ export const devices = pgTable("devices", {
   lastSync: timestamp("last_sync"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Users Table
+export const users = pgTable("users", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  password: text("password").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 // Relations

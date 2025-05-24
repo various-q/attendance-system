@@ -1,179 +1,110 @@
 "use server"
 
-import { getSupabaseServer } from "@/lib/supabase/server"
-import { mockData } from "@/lib/mock-data"
+import { db } from "@/lib/db"
+import { leaveRequests } from "@/lib/db/schema"
+import { eq } from "drizzle-orm"
+import { auth } from "@/lib/auth"
 
 // تحسين معالجة الأخطاء في جلب طلبات الإجازات المعلقة
 export async function getPendingLeaveRequests() {
   try {
-    const supabase = getSupabaseServer()
-
-    // التحقق من وجود عميل Supabase
-    if (!supabase) {
-      console.error("Supabase client is not available")
-      return mockData.leaves.filter((leave) => leave.status === "pending")
-    }
-
-    try {
-      // تحديد العلاقة المطلوبة بشكل صريح
-      const { data, error } = await supabase
-        .from("leave_requests")
-        .select(`
-          *,
-          employee:employees!leave_requests_employee_id_fkey(*)
-        `)
-        .eq("status", "pending")
-
-      if (error) {
-        console.error("Supabase error fetching pending leave requests:", error)
-        return mockData.leaves.filter((leave) => leave.status === "pending")
-      }
-
-      return data || mockData.leaves.filter((leave) => leave.status === "pending")
-    } catch (fetchError) {
-      console.error("Error during Supabase query:", fetchError)
-      return mockData.leaves.filter((leave) => leave.status === "pending")
-    }
+    const requests = await db.query.leaveRequests.findMany({
+      where: eq(leaveRequests.status, "pending"),
+      orderBy: (leaveRequests, { desc }) => [desc(leaveRequests.createdAt)],
+    })
+    return requests
   } catch (error) {
-    console.error("Error in getPendingLeaveRequests:", error)
-    return mockData.leaves.filter((leave) => leave.status === "pending")
+    console.error("Error fetching pending leave requests:", error)
+    return []
   }
 }
 
 export async function getApprovedLeaveRequests() {
   try {
-    const supabase = getSupabaseServer()
-
-    // التحقق من وجود عميل Supabase
-    if (!supabase) {
-      console.error("Supabase client is not available")
-      return mockData.leaves.filter((leave) => leave.status === "approved" || leave.status === "rejected")
-    }
-
-    try {
-      // تبسيط الاستعلام لتجنب مشاكل العلاقات
-      const { data, error } = await supabase
-        .from("leave_requests")
-        .select("*, employee:employees(*)")
-        .in("status", ["approved", "rejected"])
-
-      if (error) {
-        console.error("Supabase error fetching approved leave requests:", error)
-        return mockData.leaves.filter((leave) => leave.status === "approved" || leave.status === "rejected")
-      }
-
-      return data || mockData.leaves.filter((leave) => leave.status === "approved" || leave.status === "rejected")
-    } catch (fetchError) {
-      console.error("Error during Supabase query:", fetchError)
-      return mockData.leaves.filter((leave) => leave.status === "approved" || leave.status === "rejected")
-    }
+    const requests = await db.query.leaveRequests.findMany({
+      where: eq(leaveRequests.status, "approved"),
+      orderBy: (leaveRequests, { desc }) => [desc(leaveRequests.createdAt)],
+    })
+    return requests
   } catch (error) {
-    console.error("Error in getApprovedLeaveRequests:", error)
-    return mockData.leaves.filter((leave) => leave.status === "approved" || leave.status === "rejected")
+    console.error("Error fetching approved leave requests:", error)
+    return []
   }
 }
 
 // إضافة دوال أخرى للتعامل مع الإجازات
-export async function approveLeaveRequest(id: number, approverId: number) {
+export async function approveLeaveRequest(id: string) {
   try {
-    const supabase = getSupabaseServer()
-
-    // التحقق من وجود عميل Supabase
-    if (!supabase) {
-      return { success: true, data: { id, status: "approved", approved_by: approverId } }
+    const session = await auth()
+    if (!session?.user?.id) {
+      throw new Error("Unauthorized")
     }
 
-    try {
-      const { data, error } = await supabase
-        .from("leave_requests")
-        .update({
-          status: "approved",
-          approved_by: approverId,
-          approved_at: new Date().toISOString(),
-        })
-        .eq("id", id)
-        .select()
-
-      if (error) {
-        console.error("Error approving leave request:", error)
-        return { success: true, data: { id, status: "approved", approved_by: approverId } }
-      }
-
-      return { success: true, data: data[0] || { id, status: "approved", approved_by: approverId } }
-    } catch (updateError: any) {
-      console.error("Error during Supabase update:", updateError)
-      return { success: true, data: { id, status: "approved", approved_by: approverId } }
-    }
-  } catch (error: any) {
-    console.error("Error in approveLeaveRequest:", error)
-    return { success: true, data: { id, status: "approved", approved_by: approverId } }
+    const [request] = await db
+      .update(leaveRequests)
+      .set({
+        status: "approved",
+        approvedBy: session.user.id,
+        approvedAt: new Date(),
+      })
+      .where(eq(leaveRequests.id, id))
+      .returning()
+    return request
+  } catch (error) {
+    console.error("Error approving leave request:", error)
+    throw new Error("Failed to approve leave request")
   }
 }
 
-export async function rejectLeaveRequest(id: number, approverId: number, reason: string) {
+export async function rejectLeaveRequest(id: string) {
   try {
-    const supabase = getSupabaseServer()
-
-    // التحقق من وجود عميل Supabase
-    if (!supabase) {
-      return { success: true, data: { id, status: "rejected", approved_by: approverId, rejection_reason: reason } }
+    const session = await auth()
+    if (!session?.user?.id) {
+      throw new Error("Unauthorized")
     }
 
-    try {
-      const { data, error } = await supabase
-        .from("leave_requests")
-        .update({
-          status: "rejected",
-          approved_by: approverId,
-          approved_at: new Date().toISOString(),
-          rejection_reason: reason,
-        })
-        .eq("id", id)
-        .select()
-
-      if (error) {
-        console.error("Error rejecting leave request:", error)
-        return { success: true, data: { id, status: "rejected", approved_by: approverId, rejection_reason: reason } }
-      }
-
-      return {
-        success: true,
-        data: data[0] || { id, status: "rejected", approved_by: approverId, rejection_reason: reason },
-      }
-    } catch (updateError: any) {
-      console.error("Error during Supabase update:", updateError)
-      return { success: true, data: { id, status: "rejected", approved_by: approverId, rejection_reason: reason } }
-    }
-  } catch (error: any) {
-    console.error("Error in rejectLeaveRequest:", error)
-    return { success: true, data: { id, status: "rejected", approved_by: approverId, rejection_reason: reason } }
+    const [request] = await db
+      .update(leaveRequests)
+      .set({
+        status: "rejected",
+        approvedBy: session.user.id,
+        approvedAt: new Date(),
+      })
+      .where(eq(leaveRequests.id, id))
+      .returning()
+    return request
+  } catch (error) {
+    console.error("Error rejecting leave request:", error)
+    throw new Error("Failed to reject leave request")
   }
 }
 
-export async function addLeaveRequest(leaveRequest: any) {
+export async function createLeaveRequest(data: {
+  type: string
+  dateStart: Date
+  dateEnd: Date
+  reason: string
+}) {
   try {
-    const supabase = getSupabaseServer()
-
-    // التحقق من وجود عميل Supabase
-    if (!supabase) {
-      return { success: true, data: { ...leaveRequest, id: Math.floor(Math.random() * 1000) + 100 } }
+    const session = await auth()
+    if (!session?.user?.id) {
+      throw new Error("Unauthorized")
     }
 
-    try {
-      const { data, error } = await supabase.from("leave_requests").insert([leaveRequest]).select()
-
-      if (error) {
-        console.error("Error adding leave request:", error)
-        return { success: true, data: { ...leaveRequest, id: Math.floor(Math.random() * 1000) + 100 } }
-      }
-
-      return { success: true, data: data[0] || { ...leaveRequest, id: Math.floor(Math.random() * 1000) + 100 } }
-    } catch (insertError: any) {
-      console.error("Error during Supabase insert:", insertError)
-      return { success: true, data: { ...leaveRequest, id: Math.floor(Math.random() * 1000) + 100 } }
-    }
-  } catch (error: any) {
-    console.error("Error in addLeaveRequest:", error)
-    return { success: true, data: { ...leaveRequest, id: Math.floor(Math.random() * 1000) + 100 } }
+    const [request] = await db
+      .insert(leaveRequests)
+      .values({
+        employeeId: session.user.id,
+        type: data.type,
+        dateStart: data.dateStart,
+        dateEnd: data.dateEnd,
+        reason: data.reason,
+        status: "pending",
+      })
+      .returning()
+    return request
+  } catch (error) {
+    console.error("Error creating leave request:", error)
+    throw new Error("Failed to create leave request")
   }
 }

@@ -36,8 +36,8 @@ yarn-error.log*
 next-env.d.ts
 
 # IDE
-.idea/
 .vscode/
+.idea/
 *.swp
 *.swo
 
