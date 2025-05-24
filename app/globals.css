@@ -10,6 +10,15 @@
   --primary-gradient-end: #34b5a6;
 }
 
+/* دعم اللغتين العربية والإنجليزية */
+html[lang="ar"] {
+  font-family: var(--font-tajawal), sans-serif;
+}
+
+html[lang="en"] {
+  font-family: var(--font-inter), sans-serif;
+}
+
 /* إضافة دعم RTL */
 html[dir="rtl"] * {
   letter-spacing: 0;
@@ -26,7 +35,6 @@ html[dir="rtl"] * {
 
 body {
   color: rgb(var(--foreground-rgb));
-  font-family: var(--font-tajawal), sans-serif;
 }
 
 /* تحسين عرض الجداول على الأجهزة المحمولة */

@@ -15,10 +15,13 @@ export async function getPendingLeaveRequests() {
     }
 
     try {
-      // تبسيط الاستعلام لتجنب مشاكل العلاقات
+      // تحديد العلاقة المطلوبة بشكل صريح
       const { data, error } = await supabase
         .from("leave_requests")
-        .select("*, employee:employees(*)")
+        .select(`
+          *,
+          employee:employees!leave_requests_employee_id_fkey(*)
+        `)
         .eq("status", "pending")
 
       if (error) {

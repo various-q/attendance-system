@@ -23,6 +23,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { logoutUser, getCurrentUser } from "@/lib/actions/auth"
+import { LanguageSwitcher } from "@/components/language-switcher"
 
 export function AppSidebar() {
   const pathname = usePathname()
@@ -130,6 +131,9 @@ export function AppSidebar() {
           <Fingerprint className="h-6 w-6" />
           <span className="text-xl">نظام الحضور والانصراف</span>
         </Link>
+        <div className="ml-auto flex items-center gap-2">
+          <LanguageSwitcher />
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <div className="p-4 border-b">
