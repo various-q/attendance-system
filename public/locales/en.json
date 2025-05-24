@@ -1,0 +1,28 @@
+{
+  "employees": {
+    "title": "Employees",
+    "name": "Name",
+    "department": "Department",
+    "position": "Position",
+    "hire_date": "Hire Date",
+    "active_status": "Active Status"
+  },
+  "attendance": {
+    "title": "Attendance",
+    "timestamp": "Timestamp",
+    "type": "Type"
+  },
+  "leave_requests": {
+    "title": "Leave Requests",
+    "date_start": "Start Date",
+    "date_end": "End Date",
+    "type": "Type",
+    "status": "Status"
+  },
+  "devices": {
+    "title": "Devices",
+    "name": "Name",
+    "type": "Type",
+    "status": "Status"
+  }
+} 

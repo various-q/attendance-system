@@ -1,0 +1,28 @@
+{
+  "employees": {
+    "title": "الموظفين",
+    "name": "الاسم",
+    "department": "القسم",
+    "position": "المنصب",
+    "hire_date": "تاريخ التوظيف",
+    "active_status": "الحالة"
+  },
+  "attendance": {
+    "title": "الحضور",
+    "timestamp": "الوقت",
+    "type": "النوع"
+  },
+  "leave_requests": {
+    "title": "طلبات الإجازات",
+    "date_start": "تاريخ البداية",
+    "date_end": "تاريخ النهاية",
+    "type": "النوع",
+    "status": "الحالة"
+  },
+  "devices": {
+    "title": "الأجهزة",
+    "name": "الاسم",
+    "type": "النوع",
+    "status": "الحالة"
+  }
+} 
