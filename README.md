@@ -140,4 +140,4 @@ NEXTAUTH_URL=https://attendance-system.netlify.app
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
-MISE_SETTINGS=idiomatic_version_file_enable_tools=node 
+MISE_SETTINGS=idiomatic_version_file_enable_tools=node
