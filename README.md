@@ -128,7 +128,7 @@ npm run db:studio    # فتح واجهة إدارة قاعدة البيانات
 - [اسمك](https://github.com/username) - المطور الرئيسي 
 
 # رابط الاتصال بقاعدة البيانات (PostgreSQL/Supabase)
-DATABASE_URL=postgresql://postgres:MyStrongPassword123@db.dhjsllhmvxqbutjxcuyx.supabase.co:5432/postgres
+DATABASE_URL=postgresql://postgres:acSB5CV*r%40u8ncp@db.dhjsllhmvxqbutjxcuyx.supabase.co:5432/postgres
 
 # سر التوثيق الخاص بـ NextAuth (أنشئ قيمة عشوائية قوية)
 NEXTAUTH_SECRET=2f8c1e7b8e2a4c1d9e8f7a6b5c4d3e2f
@@ -137,7 +137,7 @@ NEXTAUTH_SECRET=2f8c1e7b8e2a4c1d9e8f7a6b5c4d3e2f
 NEXTAUTH_URL=https://attendance-system.netlify.app
 
 # إذا كنت تستخدم Supabase مباشرة في الكود (اختياري)
-NEXT_PUBLIC_SUPABASE_URL=https://xxxxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_URL=https://db.dhjsllhmvxqbutjxcuyx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 MISE_SETTINGS=idiomatic_version_file_enable_tools=node
