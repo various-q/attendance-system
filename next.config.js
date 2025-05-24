@@ -50,6 +50,12 @@ const nextConfig = {
 
   // Configure output
   output: 'standalone',
+
+  // Add experimental features
+  experimental: {
+    serverActions: true,
+    serverComponentsExternalPackages: ['@auth/drizzle-adapter'],
+  },
 }
 
 module.exports = nextConfig
